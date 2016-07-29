@@ -44,11 +44,12 @@ fhessian = d2f(time, params);
 q = length(params);
 first_term = zeros(q, q);
 delta = f(time, params) - y_mean;
-size(delta)
+
 for a = 1:q
     for b = 1:q
         for i = 1:N
             for j = 1:N
+                % Should it be fhessian(a,b,j)? Not j --> i??
                 first_term(a,b) = first_term(a,b) + 2 * fhessian(a,b,j) * R(i,j) * delta(j);
             end
         end
@@ -64,10 +65,11 @@ RCR = R * C * R;
 error = zeros(q, q);
 for a = 1:q
     for b = 1:q
+        % Should we not be able to move it to up here? Like so:
+        % dfRCRdf = gradient * RCR * gradient';
         for c = 1:q
             for d = 1:q
                 dfRCRdf = gradient(c) * RCR * gradient(d)';
-                frcrf = size(dfRCRdf)
                 error(a,b) = error(a,b) + 4 * H_inv(a,c) * dfRCRdf * H_inv(d,b);
             end
         end
