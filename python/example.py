@@ -128,7 +128,7 @@ def coff_det(y, f):
     SS_reg = np.sum(np.square(np.subtract(y_mean, f)))
     SS_res = np.sum(np.square(np.subtract(y,      f)))
 
-    print("Coefficient of determination:\t%s" % (1- SS_res / SS_tot))
+    print("# Coefficient of determination:\t%s" % (1- SS_res / SS_tot))
 
 
 
@@ -196,9 +196,10 @@ def main(args):
     params, sigma, chi2_min = ccls.ccls(time, trajectories, min_method, guess)
 
     # RESULT:
-    print("Optimal param:\t%s" % params)
-    print("Sigma:\t%s" % sigma)
-    print("Chi^2 value: \t%s" % chi2_min)
+    print("# trajectories M=%s,\tsampling times N=%s, t_0=%s" % (M, N, time[0]))
+    print("# Optimal param:\t%s" % params)
+    print("# Sigma:\t%s" % sigma)
+    print("# Chi-square value: \t%s" % chi2_min)
 
     # Also get goodness-of-fitt parametes
     y_mean = ccls.computeMean(trajectories)
