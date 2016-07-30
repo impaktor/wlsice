@@ -49,8 +49,7 @@ for a = 1:q
     for b = 1:q
         for i = 1:N
             for j = 1:N
-                % Should it be fhessian(a,b,j)? Not j --> i??
-                first_term(a,b) = first_term(a,b) + 2 * fhessian(a,b,j) * R(i,j) * delta(j);
+                first_term(a,b) = first_term(a,b) + 2 * fhessian(a,b,i) * R(i,j) * delta(j);
             end
         end
     end
