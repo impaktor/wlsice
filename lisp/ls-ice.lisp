@@ -1,6 +1,6 @@
-;;;; Correlation corrected least squares
+;;;; Least squares including correlation in error
 
-(in-package ccls)
+(in-package ls-ice)
 
 (defun test () (print "test 42!"))
 

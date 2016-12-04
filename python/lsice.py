@@ -83,7 +83,7 @@ def makeCovarianceMatrix(trajectories):
 
 # np.array(2),  np.array(3), np.array(2), np.array(2), np.array(1) -> np.array(1)
 def errorEstimation_GA(df, d2f, R, C, delta):
-    """CCLS error estimation, valid also for non-linear fitting. R could
+    """LS-ICE error estimation, valid also for non-linear fitting. R could
     be R = inv(cov), or the diagonal of that, or some other symmetric
     matrix of our choosing. With N sampling points, and k parameters
     we have:
@@ -176,7 +176,7 @@ def my_minimize(t, y, R, C, guess_start, min_method):
 
 
 # np.array(1), np.array(2), string, np.array(1) -> tuple(np.array(1), np.array(1), number)
-def ccls(time, trajectories, min_method, guess):
+def lsice(time, trajectories, min_method, guess):
     "Perform the correlated corrected least squares fit"
 
     M,N = np.shape(trajectories)
@@ -184,7 +184,7 @@ def ccls(time, trajectories, min_method, guess):
     C, y_mean = makeCovarianceMatrix(trajectories)
     y_sigma = np.sqrt(np.diag(C))
 
-    # CCLS
+    # LS-ICE
     C = C / M
     R = np.linalg.inv(np.diag(np.diag(C), 0))
 

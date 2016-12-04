@@ -64,7 +64,7 @@ end
 guess = [1,1];                          % initial parameter guess
 
 % Perform the actual fit, (using fminunc, with default options)
-[params, sigma, chi2_min] = ccls(time, trajectories, guess);
+[params, sigma, chi2_min] = lsice(time, trajectories, guess);
 
 % RESULT:
 fprintf('Optimal param: %s\n', params);

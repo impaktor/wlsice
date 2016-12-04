@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Example file for using CCLS method to fit a non-linear / powerlaw
+"""Example file for using LS-ICE method to fit a non-linear / powerlaw
 function to mean ensamble data."""
 
 import sys
 import os
 import numpy as np
 import glob                     # For reading in data
-import ccls
+import lsice
 
 
 # np.array(1), np.array(1) -> np.array(1)
@@ -133,7 +133,7 @@ def coff_det(y, f):
 
 
 def main(args):
-    "Perform a correlation corrected least squares fit on data in folder"
+    "Perform a least squares including correlation in error on data in folder"
 
     if len(args) < 2:
         print("Usage: %s <data-path/>" % args[0])
@@ -190,10 +190,10 @@ def main(args):
 
 
     # The analytical function to fit, its gradient, and hessian
-    ccls.init(f, df, d2f)
+    lsice.init(f, df, d2f)
 
     # Perform the actual fit
-    params, sigma, chi2_min = ccls.ccls(time, trajectories, min_method, guess)
+    params, sigma, chi2_min = lsice.lsice(time, trajectories, min_method, guess)
 
     # RESULT:
     print("# trajectories M=%s,\tsampling times N=%s, t_0=%s" % (M, N, time[0]))
@@ -202,7 +202,7 @@ def main(args):
     print("# Chi-square value: \t%s" % chi2_min)
 
     # Also get goodness-of-fitt parametes
-    y_mean = ccls.computeMean(trajectories)
+    y_mean = lsice.computeMean(trajectories)
     coff_det(y_mean, f(time, params))
 
 

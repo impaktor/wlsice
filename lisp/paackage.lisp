@@ -2,7 +2,7 @@
 
 (in-package :common-lisp-user)
 
-(defpackage :correlation-corrected-least-squares
+(defpackage :least-squares-including-correlation-in-error
   (:use :common-lisp)
-  (:nicknames :ccls)
+  (:nicknames :ls-ice)
   (:export fit))
