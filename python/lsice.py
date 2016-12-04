@@ -101,7 +101,7 @@ def errorEstimation_GA(df, d2f, R, C, delta):
         for b in range(q):
             for i in range(N):
                 for j in range(N):
-                    first_term[a,b] = first_term[a,b] + 2 * d2f[a,b,j] * R[i,j] * delta[j]
+                    first_term[a,b] = first_term[a,b] + 2 * d2f[a,b,i] * R[i,j] * delta[j]
 
     second_term = 2 * np.dot(np.dot(df,R),np.transpose(df))
 
