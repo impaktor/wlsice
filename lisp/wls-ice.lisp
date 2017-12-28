@@ -1,6 +1,6 @@
-;;;; Least squares including correlation in error
+;;;; Weighted least squares, including correlation in error
 
-(in-package ls-ice)
+(in-package wls-ice)
 
 (defun compute-mean (trajectories)
   "Return foreign array of dim. 1xN of MxN input,
@@ -27,7 +27,7 @@
                                            (gsll:column trajectories j))))))
 
 
-(defun compute-ls-ice-error (df d2f R C)
+(defun compute-wls-ice-error (df d2f R C)
   "Compute the correlation corrected error estimate")
 
 

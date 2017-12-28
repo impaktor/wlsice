@@ -82,8 +82,8 @@ def makeCovarianceMatrix(trajectories):
 
 
 # np.array(2),  np.array(3), np.array(2), np.array(2), np.array(1) -> np.array(1)
-def errorEstimation_GA(df, d2f, R, C, delta):
-    """LS-ICE error estimation, valid also for non-linear fitting. R could
+def errorEstimation(df, d2f, R, C, delta):
+    """WLS-ICE error estimation, valid also for non-linear fitting. R could
     be R = inv(cov), or the diagonal of that, or some other symmetric
     matrix of our choosing. With N sampling points, and k parameters
     we have:
@@ -153,7 +153,7 @@ def chi2Jacobian(params, t, y, R):
 
 # np.array(1), np.array(1), np.array(2), np.array(2), np,array(1), string,  ->
 #  tuple(np.array(1), np.array(1), number)
-def my_minimize(t, y, R, C, guess_start, min_method):
+def minimize(t, y, R, C, guess_start, min_method):
     """Minimize the chi-square function, to find optimal parameters and
     their esitmated error for function f"""
 
@@ -168,7 +168,7 @@ def my_minimize(t, y, R, C, guess_start, min_method):
         err("Unknown method: %s\n" % min_method)
 
     params = result.x
-    err = errorEstimation_GA(df(t,params), d2f(t,params), R, C, np.subtract(f(t,params),y))
+    err = errorEstimation(df(t,params), d2f(t,params), R, C, np.subtract(f(t,params),y))
 
     chi_value = chi2(params, t, y, R)
     sigma = np.sqrt(err)
@@ -176,7 +176,7 @@ def my_minimize(t, y, R, C, guess_start, min_method):
 
 
 # np.array(1), np.array(2), string, np.array(1) -> tuple(np.array(1), np.array(1), number)
-def lsice(time, trajectories, min_method, guess):
+def fit(time, trajectories, guess, min_method='nm'):
     "Perform the correlated corrected least squares fit"
 
     M,N = np.shape(trajectories)
@@ -189,6 +189,6 @@ def lsice(time, trajectories, min_method, guess):
     R = np.linalg.inv(np.diag(np.diag(C), 0))
 
     # Do the parameter fitting, return: [opt_parameters, errors, chi2_min]
-    p_opt, p_sigma, chi2_min = my_minimize(time, y_mean, R, C, guess, min_method)
+    p_opt, p_sigma, chi2_min = minimize(time, y_mean, R, C, guess, min_method)
 
     return (p_opt, p_sigma, chi2_min)

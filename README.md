@@ -1,12 +1,13 @@
-# Least Squares Including Correlation in Error
+# Weighted Least Squares Including Correlation in Error
 
 Code for performing the weighted Least Squares Including Correlation in Error
-(LS-ICE) algorithm when fitting a function to ensemble averages, implemented
+(WLS-ICE) algorithm when fitting a function to ensemble averages, implemented
 in three languages, with example data with M=200 fractional Brownian motion
 trajectories (generated with parameters as in paper "Fitting a function to
 time-dependent ensemble averaged data"):
 
-1. Python scripts that read in the data and apply the LS-ICE algorithm to it.
+1. Python scripts that read in the data and apply the WLS-ICE algorithm to it.
+   Run ./example.py ../data from python-folder, for a demonstration.
 
 2. Octave/Matlab - code ported from Python. `f.m`, `df.m`, and `d2f.m`
    defines the analytical function to fit, its gradient and hessian,

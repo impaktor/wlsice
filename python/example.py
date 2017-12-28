@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Example file for using LS-ICE method to fit a non-linear / powerlaw
-function to mean ensamble data."""
+"""Example file for using WLS-ICE method to fit a non-linear /
+powerlaw function to mean ensamble data.
+
+"""
 
 import sys
 import os
 import numpy as np
 import glob                     # For reading in data
-import lsice
-
+import wlsice
 
 # np.array(1), np.array(1) -> np.array(1)
 def f(t, params):
@@ -162,10 +163,10 @@ def main(args):
 
 
     # The analytical function to fit, its gradient, and hessian
-    lsice.init(f, df, d2f)
+    wlsice.init(f, df, d2f)
 
     # Perform the actual fit
-    params, sigma, chi2_min = lsice.lsice(time, trajectories, min_method, guess)
+    params, sigma, chi2_min = wlsice.fit(time, trajectories, guess, min_method)
 
     # RESULT:
     print("# trajectories M=%s,\tsampling times N=%s, t_0=%s" % (M, N, time[0]))
@@ -174,9 +175,8 @@ def main(args):
     print("# Chi-square value: \t%s" % chi2_min)
 
     # Also get goodness-of-fitt parametes
-    y_mean = lsice.computeMean(trajectories)
+    y_mean = wlsice.computeMean(trajectories)
     coff_det(y_mean, f(time, params))
-
 
 
 if __name__ == "__main__":

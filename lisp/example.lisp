@@ -57,4 +57,4 @@ each with N sampling points, as a foreign array."
 (defvar *trajectories* (get-trajectories) "Foreign MxN array of M trajectories")
 
 
-;;(ls-ice:fit #'f #'df #'d2f time trajectories :guess '(1 1))
+;;(wls-ice:fit #'f #'df #'d2f time trajectories :guess '(1 1))

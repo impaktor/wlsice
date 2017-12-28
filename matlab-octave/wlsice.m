@@ -1,5 +1,5 @@
-function [params, sigma, chi2_min] = lsice(time, trajectories, guess)
-% Perform the correlated corrected least squares fit on input data.
+function [params, sigma, chi2_min] = wlsice(time, trajectories, guess)
+% Perform the correlated corrected weighted least squares fit on input data.
 % M is number of tranjectories, N number of sampling points,
 
 [M, N] = size(trajectories);
@@ -17,7 +17,7 @@ C = Y * Y' / (M - 1.0);
 y_sigma = sqrt(diag(C));                 %  In case we want it
 
 
-%%% LSICE parameter
+%%% WLS-ICE parameter
 C = C / M;
 %R = inv(diag(diag(C), 0));             % works in octave 4.0.2
 R = diag(1./diag(C), 0);                % works in matlab and octave
@@ -29,8 +29,8 @@ chi2 = @(p, t, y, R_) (y - f(t, p))' * R_ * (y - f(t, p));
 [params, chi2_min] = fminunc(@(par)(chi2(par, time, y_mean, R)), guess);
 
 
-%%% LSICE sigma
-% LSICE error estimation, valid also for non-linear fitting. R could be R =
+%%% WLS-ICE sigma
+% WLS-ICE error estimation, valid also for non-linear fitting. R could be R =
 % inv(cov), or the diagonal of that, or some other symmetric matrix of our
 % choosing. With N sampling points, and k parameters we have:
 %
