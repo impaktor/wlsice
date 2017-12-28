@@ -78,17 +78,6 @@ def read_in_data(load_base_path):
     if not load_base_path:
         error("Specify base path to folder with data to fit. Each file having two colums, <time, trajectory>.\n")
 
-    # # If trajectories were saved in binary matrix form form from before, use it:
-    # save_name = load_base_path.rstrip("/") + ".npz"
-    # if os.path.isfile(save_name) > 0:
-    #     print("# Reading in trajectories from " + save_name)
-    #     trajectories = np.load(save_name)['trajectories']
-    #     time = np.load(save_name)['time']
-    #     M,N = np.shape(trajectories)
-    #     assert(len(time) == N)
-    #     ##sys.stdout.write("\tDONE, %s x %s\n" % (M,N))
-    #     return time, trajectories
-
     fileNames = glob.glob(load_base_path + "/*")
     # fileNames = os.listdir("load_base_path")
 
@@ -106,9 +95,6 @@ def read_in_data(load_base_path):
                 if i == 0:                  # save the time first time around
                     time.append(tmp[0])
         f.close()
-
-    # # Save as binary compressed *.npz-file, for faster loading
-    # np.savez_compressed(save_name, trajectories=np.array(trajectories), time=np.array(time))
 
     return np.array(time), np.array(trajectories)
 
@@ -147,20 +133,6 @@ def main(args):
 
     min_method = "nm"           # Use Nelder-Mead minimization method
     guess=np.array([.5,.5])     # Starting point in parameter space
-
-
-
-    # # EXTRACT trajectorie txt files from *.npz file:
-    # #for i in range(len(trajectories)):
-    # for i in range(200):
-    #     f = open("data/trajectory_%s" % i, 'w')
-    #     f.write("# time\ttrajectory\n")
-    #     for j in range(len(trajectories[i])):
-    #         f.write("%s\t%s\n" % (time[j], trajectories[i][j]))
-    #     f.close()
-    # return 0
-
-
 
     #### OPTIONAL: Find index of first time to include in fitting procedure
     starttime = 200              # first time point to include in fitting
