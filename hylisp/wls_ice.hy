@@ -12,9 +12,7 @@
 ;; function, function, function -> nil
 (defn init [f_ df_ d2f_]
   "Set function to fit"
-  (global f)
-  (global df)
-  (global d2f)
+  (global f  df d2f)
   (def f f_)
   (def df df_)
   (def d2f d2f_))
@@ -23,8 +21,8 @@
 (defn compute-mean [trajectories]
   "Compute mean of trajectories"
 
-  (setv (, M N) (np.shape trajectories))
-  (setv y-mean (np.zeros N))
+  (setv (, M N) (np.shape trajectories)
+        y-mean (np.zeros N))
 
   (for [i (range N)]
     (assoc y-mean i (/  (.sum np (get trajectories (, (slice None) i))) M)))
@@ -56,9 +54,9 @@
 ;; np.array(2) -> np.array(2), np.array(1)
 (defn make-covariance-matrix [trajectories]
   "Make covariance matrix from an MxN array of trajectories"
-  (setv (, M N) (np.shape trajectories))
-  (setv y-mean (compute-mean trajectories))
-  (setv C (make-covariance-from-Y (make-Y trajectories y-mean)))
+  (setv (, M N) (np.shape trajectories)
+        y-mean (compute-mean trajectories)
+        C (make-covariance-from-Y (make-Y trajectories y-mean)))
   (, C y-mean))
 
 ;; np.array(2),  np.array(3), np.array(2), np.array(2), np.array(1) -> np.array(1)
@@ -73,44 +71,43 @@
     delta  is a  N          dimensional array
 
     """
-  (setv q (len df))
-  (setv N (len R))
+  (setv q (len df)
+        N (len R)
+        first-term (np.zeros (, q q)))
 
-  (setv first-term (np.zeros (, q q)))
-
-  (for [a (range q)]
-    (for [b (range q)]
-      (for [i (range N)]
-        (for [j (range N)]
-          (setv (get first-term (, a b))
-                (+ (get first-term (, a b))
-                   (* 2
-                      (get d2f (, a b i))
-                      (get R (, i j))
-                      (get delta j))))))))
+  (for [a (range q)
+        b (range q)
+        i (range N)
+        j (range N)]
+    (setv (get first-term (, a b))
+          (+ (get first-term (, a b))
+             (* 2
+                (get d2f (, a b i))
+                (get R (, i j))
+                (get delta j)))))
 
   (setv second-term (* 2 (np.dot (np.dot df R)
                                  (np.transpose df))))
   (setv hessian (+ first-term
                    second-term))
 
-  (setv H-inv (np.linalg.inv hessian))
-  (setv RCR (np.dot R (np.dot C R)))
-  (setv error (np.zeros (, q q)))
+  (setv H-inv (np.linalg.inv hessian)
+        RCR (np.dot R (np.dot C R))
+        error (np.zeros (, q q)))
 
-  (for [a (range q)]
-    (for [b (range q)]
-      (for [c (range q)]
-        (for [d (range q)]
-          (setv df-RCR-df (np.dot (get df c)
-                                  (np.dot RCR
-                                          (np.transpose (get df d)))))
-          (setv (get error (, a b))
-                (+ (get error (, a b))
-                   (* 4
-                      (get H-inv (, a c))
-                      df-RCR-df
-                      (get H-inv (, d b)))))))))
+  (for [a (range q)
+        b (range q)
+        c (range q)
+        d (range q)]
+    (setv df-RCR-df (np.dot (get df c)
+                            (np.dot RCR
+                                    (np.transpose (get df d)))))
+    (setv (get error (, a b))
+          (+ (get error (, a b))
+             (* 4
+                (get H-inv (, a c))
+                df-RCR-df
+                (get H-inv (, d b))))))
   (.diagonal error))
 
 
@@ -132,9 +129,9 @@
   return np.array of result for each i
   """
   (print "Params into jacobian:" params)
-  (setv dY (df t params))
-  (setv Y (f t params))
-  (setv ans (np.zeros (len dY)))
+  (setv dY (df t params)
+        Y (f t params)
+        ans (np.zeros (len dY)))
   (for [i (range (len dY))]
     (setv (get ans i)
           (-  (* 2
@@ -167,9 +164,9 @@
                         :options {"xtol" 1e-8 "disp" display}))]
         [True
          (error (+ "Unknown method: " min-method "\n"))])
-  (setv params result.x)
-  (setv chi-value (chi2 params t y R))
-  (setv sigma (np.sqrt (error-estimation (df t params) (d2f t params) R C
+  (setv params result.x
+        chi-value (chi2 params t y R)
+        sigma (np.sqrt (error-estimation (df t params) (d2f t params) R C
                                          (np.subtract (f t params) y))))
   (, params sigma chi-value))
 
@@ -178,14 +175,13 @@
 (defn fit [time trajectories guess &optional [min-method "nm"]]
   "Perform the correlated corrected least squares fit"
 
-  (setv (, M N) (np.shape trajectories))
-  (setv (, C y-mean) (make-covariance-matrix trajectories))
-  (setv y-sigma (np.sqrt (np.diag C)))
+  (setv (, M N) (np.shape trajectories)
+        (, C y-mean) (make-covariance-matrix trajectories)
+        y-sigma (np.sqrt (np.diag C)))
 
   ;; LS-ICE
-  (setv C (/ C M))
-  (setv R (np.linalg.inv (np.diag (np.diag C) 0)))
+  (setv C (/ C M)
+        R (np.linalg.inv (np.diag (np.diag C) 0)))
 
   ;; Do the parameter fitting, return: [opt_parameters, errors, chi2_min]
-
   (minimize time y-mean R C guess min-method))

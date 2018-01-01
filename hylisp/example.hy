@@ -25,9 +25,9 @@ powerlaw function to mean ensamble data.
   (setv (, a b) (, (get params 0)
                    (get params 1)))
 
-  (setv dfd_lam (np.zeros (, (len params) (len t))))
-  (setv (get dfd_lam 0) (np.power t b))
-  (setv (get dfd_lam 1) (np.multiply (* a (np.log t))
+  (setv dfd_lam (np.zeros (, (len params) (len t)))
+        (get dfd_lam 0) (np.power t b)
+        (get dfd_lam 1) (np.multiply (* a (np.log t))
                                      (np.power t b)))
   dfd_lam)
 
@@ -36,11 +36,11 @@ powerlaw function to mean ensamble data.
       """Return Hessian of powerlaw"""
   (setv (, a b) (, (get params 0)
                    (get params 1)))
-  (setv d2f (np.zeros (, (len params) (len params) (len t))))
-  (setv (get d2f (, 0 1)) (np.multiply (np.log t)
-                                       (np.power t b)))
-  (setv (get d2f (, 1 0)) (get d2f (, 0 1)))
-  (setv (get d2f (, 1 0)) (np.multiply (* a (np.power (np.log t) 2))
+  (setv d2f (np.zeros (, (len params) (len params) (len t)))
+        (get d2f (, 0 1)) (np.multiply (np.log t)
+                                       (np.power t b))
+        (get d2f (, 1 0)) (get d2f (, 0 1))
+        (get d2f (, 1 0)) (np.multiply (* a (np.power (np.log t) 2))
                                        (np.power t b)))
   d2f)
 
@@ -63,8 +63,8 @@ powerlaw function to mean ensamble data.
   a single compressed binary file, useful if many load/read operations)
   """
 
-  (setv trajectories (list))
-  (setv time (list))
+  (setv trajectories (list)
+        time (list))
   (if (not load-base-path)
       (error "Specify base path to folder with data to fit. Each file having two colums, <time, trajectory>.\n"))
 
@@ -97,10 +97,10 @@ powerlaw function to mean ensamble data.
   (setv N (len y))
 
   ;; note, by y-mean here we mean the average over N, not M!
-  (setv y-mean (/  (np.sum y) N))
-  (setv SS-tot (np.sum (np.square (np.subtract y-mean y))))
-  (setv SS-reg (np.sum (np.square (np.subtract y-mean f))))
-  (setv SS-res (np.sum (np.square (np.subtract y      f))))
+  (setv y-mean (/  (np.sum y) N)
+        SS-tot (np.sum (np.square (np.subtract y-mean y)))
+        SS-reg (np.sum (np.square (np.subtract y-mean f)))
+        SS-res (np.sum (np.square (np.subtract y      f))))
 
   (print (+ "# Coefficient of determination:\t"
             (str (- 1 (/ SS-res SS-tot))))))
