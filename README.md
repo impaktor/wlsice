@@ -2,7 +2,7 @@
 
 Code for performing the weighted Least Squares Including Correlation in Error
 (WLS-ICE) algorithm when fitting a function to ensemble averages, implemented
-in three languages, with example data with M=100 fractional Brownian motion
+in languages listed below, with example data with M=100 fractional Brownian motion
 trajectories (generated with parameters as in paper "Fitting a function to
 time-dependent ensemble averaged data"):
 
@@ -17,6 +17,7 @@ time-dependent ensemble averaged data"):
    GSL (GNU Scientific library), and libffi. Evaluate example.lisp. Tested on
    SBCL.
 
+4. [Hy](https://github.com/hylang/hy/) Lisp, analogous to Python.
 
 # Generating trajectories
 
