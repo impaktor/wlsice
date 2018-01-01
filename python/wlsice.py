@@ -8,8 +8,7 @@
 
 import sys
 import numpy as np
-from scipy.optimize import minimize
-import scipy
+import scipy.optimize
 
 f = 0
 df = 0
@@ -165,7 +164,7 @@ def minimize(t, y, R, C, guess_start, min_method):
         result = scipy.optimize.minimize(chi2, guess_start, args=(t, y, R), method='Nelder-Mead',
                                          options={'xtol': 1e-8, 'disp': display})
     else:
-        err("Unknown method: %s\n" % min_method)
+        error("Unknown method: %s\n" % min_method)
 
     params = result.x
     err = errorEstimation(df(t,params), d2f(t,params), R, C, np.subtract(f(t,params),y))
