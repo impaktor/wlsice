@@ -68,7 +68,7 @@ for a = 1:q
         % dfRCRdf = gradient * RCR * gradient';
         for c = 1:q
             for d = 1:q
-                dfRCRdf = gradient(c) * RCR * gradient(d)';
+                dfRCRdf = gradient(c,:) * RCR * gradient(d,:)';
                 error(a,b) = error(a,b) + 4 * H_inv(a,c) * dfRCRdf * H_inv(d,b);
             end
         end

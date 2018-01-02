@@ -23,7 +23,7 @@ for i = 1:length(list)
     fclose(fobj);
     traj = cell2mat(trajInput);
     trajectories(i,:) = traj(:,2)';     % add M trajectories to matrix
-    fprintf( 'Read in file #%d, "%s"\n', i, fname);
+     % fprintf( 'Read in file #%d, "%s"\n', i, fname);
 end
 time = traj(:,1);                       % our x-axis, (assume same in all files)
 
@@ -42,7 +42,7 @@ N = length(time);
 
 
 %%% OPTIONAL: Reduce N
-everyN = 5;
+everyN = 1;
 time = time(1:everyN:N);
 trajectories = trajectories(:, 1:everyN:N);
 N = length(time);
@@ -67,16 +67,19 @@ guess = [1,1];                          % initial parameter guess
 [params, sigma, chi2_min] = wlsice(time, trajectories, guess);
 
 % RESULT:
-fprintf('Optimal param: %s\n', params);
-fprintf('Sigma: %s\n', sigma);
-fprintf('Chi^2 value: %s\n', chi2_min);
+fprintf('Optimal param: %d\n', params);
+fprintf('Sigma: %d\n', sigma);
+fprintf('Chi^2 value: %d\n', chi2_min);
 
 
-%%% Also get goodness-of-fitt parametes
-% note, by y_mean_ here we mean the average over N, not M!
-y_mean_over_N = sum(y_mean) / N;
-
-SS_tot = sum(square(y_mean_over_N - y_mean));
-SS_reg = sum(square(y_mean_over_N - f(times, params)));
-SS_res = sum(square(y_mean - f(times, params)));
-coeff = (1- SS_res / SS_tot)
+% %%% Also get goodness-of-fit parameters
+% % note, by y_mean here we mean the average over N, not M!
+%
+% y = mean(trajectories);
+%
+% y_mean = sum(y) / N;
+%
+% SS_tot = sum(square(y_mean - y));
+% SS_reg = sum(square(y_mean - f(times, params)));
+% SS_res = sum(square(y - f(times, params)));
+% coeff = (1- SS_res / SS_tot)
