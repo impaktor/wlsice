@@ -13,11 +13,7 @@ time-dependent ensemble averaged data"):
    defines the analytical function to fit, its gradient and hessian,
    respectively. Run `example.m` file for example.
 
-3. Common Lisp - Depends on GSLL (GSL Lisp Library), which in turn depends on
-   GSL (GNU Scientific library), and libffi. Evaluate example.lisp. Tested on
-   SBCL.
-
-4. [Hy](https://github.com/hylang/hy/) Lisp, analogous to Python.
+3. [Hy](https://github.com/hylang/hy/) Lisp, analogous to Python.
 
 # Generating trajectories
 
