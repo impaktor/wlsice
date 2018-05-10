@@ -98,9 +98,11 @@ powerlaw function to mean ensamble data.
 
   ;; note, by y-mean here we mean the average over N, not M!
   (setv y-mean (/  (np.sum y) N)
-        SS-tot (np.sum (np.square (np.subtract y-mean y)))
-        SS-reg (np.sum (np.square (np.subtract y-mean f)))
-        SS-res (np.sum (np.square (np.subtract y      f))))
+        ;;SS-tot (np.sum (np.square (np.subtract y-mean y)))
+        ;; using Hy-threadinig instead of above:
+        SS-tot (-> (np.subtract y-mean y) np.square np.sum)
+        SS-reg (-> (np.subtract y-mean f) np.square np.sum)
+        SS-res (-> (np.subtract y      f) np.square np.sum))
 
   (print (+ "# Coefficient of determination:\t"
             (str (- 1 (/ SS-res SS-tot))))))
