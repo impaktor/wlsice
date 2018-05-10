@@ -78,13 +78,13 @@ powerlaw function to mean ensamble data.
     (.append trajectories (list))
     (for [line (.readlines a-file)]
       (setv li (.strip line))
-      (if (not (.startswith li "#"))
-          (do (setv tmp (list-comp
-                          (float value)
-                          (value (.split line))))
-              (.append (get trajectories i) (get tmp 1))
-              (if (= i 0)
-                  (.append time (get tmp 0))))))
+      (when (not (.startswith li "#"))
+        (setv tmp (list-comp
+                    (float value)
+                    (value (.split line))))
+        (.append (get trajectories i) (get tmp 1))
+        (if (= i 0)
+            (.append time (get tmp 0)))))
     (.close a-file))
   (, (np.array time) (np.array trajectories)))
 
