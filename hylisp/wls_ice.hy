@@ -99,9 +99,9 @@
         b (range q)
         c (range q)
         d (range q)]
-    (setv df-RCR-df (np.dot (get df c)
+    (setv df-RCR-df (np.dot (. df[c]) ;; alias for (get df c)
                             (np.dot RCR
-                                    (np.transpose (get df d)))))
+                                    (np.transpose (. df[d])))))
     (setv (get error (, a b))
           (+ (get error (, a b))
              (* 4
@@ -133,9 +133,9 @@
         Y (f t params)
         ans (np.zeros (len dY)))
   (for [i (range (len dY))]
-    (setv (get ans i)
+    (setv (. ans[i])
           (-  (* 2
-                 (np.dot (np.dot (get dY i) R)
+                 (np.dot (np.dot (. dY[i]) R)
                          (np.subtract y Y))))))
   (print "Jacobian:\t%s\n" % ans)
   ans)

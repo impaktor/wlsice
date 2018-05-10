@@ -11,7 +11,7 @@ powerlaw function to mean ensamble data.
 (defn f [t params]
   """A powerlaw: a*t**b"""
   (assert (len (= 2 params)))
-  (np.multiply (get params 0) (np.power t (get params 1))))
+  (np.multiply (. params[0]) (np.power t (. params[1]))))
 
 
 ;; np.array(1), np.array(1) -> np.array(2)
@@ -19,16 +19,16 @@ powerlaw function to mean ensamble data.
   """Gradient of a powerlaw, with regards to parameters a,b:
   gradient(a*t**b) = [t**b, a*log(t)*t**b]
   """
-  (assert (> (get t 0) 0))
+  (assert (> (. t[0]) 0))
   (assert (= (len params) 2))
 
-  (setv (, a b) (, (get params 0)
-                   (get params 1)))
+  (setv (, a b) (, (. params[0])
+                   (. params[1])))
 
   (setv dfd_lam (np.zeros (, (len params) (len t)))
-        (get dfd_lam 0) (np.power t b)
-        (get dfd_lam 1) (np.multiply (* a (np.log t))
-                                     (np.power t b)))
+        (. dfd_lam[0]) (np.power t b)
+        (. dfd_lam[1]) (np.multiply (* a (np.log t))
+                                    (np.power t b)))
   dfd_lam)
 
 ;; np.array(1), np.array(1) -> np.array(3!)
@@ -143,7 +143,7 @@ powerlaw function to mean ensamble data.
   (setv (, params sigma chi2-min) (wls-ice.fit time trajectories guess min-method))
 
   ;; RESULT:
-  (print "# trajectories M=" M "\tsampling times N=" N "t_0=" (get time 0))
+  (print "# trajectories M=" M "\tsampling times N=" N "t_0=" (. time[0]))
   (print "# Optimal param:\t" params)
   (print "# Sigma:\t" sigma)
   (print "# Chi-square value:\t" chi2-min)
