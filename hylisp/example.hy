@@ -65,12 +65,12 @@ powerlaw function to mean ensamble data.
 
   (setv trajectories (list)
         time (list))
-  (if (not load-base-path)
+  (unless load-base-path
       (error "Specify base path to folder with data to fit. Each file having two colums, <time, trajectory>.\n"))
 
   (setv file-names (glob.glob (+ load-base-path "/*")))
 
-  (if (not file-names)
+  (unless file-names
       (error "Specify <base path> to data files. No files found!\n"))
 
   (for [(, i file-name) (enumerate file-names)]
