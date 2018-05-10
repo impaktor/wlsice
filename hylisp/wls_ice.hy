@@ -1,8 +1,8 @@
 (import sys scipy.optimize [numpy :as np])
 
-(def f 0)
-(def df 0)
-(def d2f 0)
+(setv f 0
+      df 0
+      d2f 0)
 
 (defn error [string &optional [stop True]]
   "Auxiliary function for error printing"
@@ -13,9 +13,9 @@
 (defn init [f_ df_ d2f_]
   "Set function to fit"
   (global f  df d2f)
-  (def f f_)
-  (def df df_)
-  (def d2f d2f_))
+  (setv f f_
+        df df_
+        d2f d2f_))
 
 ;; np.array(2) -> np.array(1)
 (defn compute-mean [trajectories]

@@ -118,15 +118,15 @@ powerlaw function to mean ensamble data.
   ;; Read in data. Assumes path given is a folder where _all_ files
   ;; are 2 column files with x ("time") being column 1 and y
   ;; ("trajectory") being column 2..
-  (setv (, time trajectories) (read-in-data (get args 1)))
-  (setv (, M N) (np.shape trajectories))
+  (setv (, time trajectories) (read-in-data (get args 1))
+        (, M N) (np.shape trajectories))
   (setv min-method "nm")           ;; Use Nelder-Mead minimization method
   (setv guess (np.array '(.5 .5))) ;; Starting point in parameter space
 
   ;; OPTIONAL: Find index of first time to include in fitting procedure
-  (setv starttime 200)           ;; first time point to include in fitting
-  (setv epsilon0 (- (get time 1) (get time 0))) ;; time step size
-  (setv start-idx (int (/ starttime epsilon0)))
+  (setv starttime 200          ; first time point to include in fitting
+        epsilon0 (- (get time 1) (get time 0)) ; time step size
+        start-idx (int (/ starttime epsilon0)))
 
   ;;trajectories[:,start_idx:]
   (setv trajectories (get trajectories (, (slice None) (slice start-idx None))))
